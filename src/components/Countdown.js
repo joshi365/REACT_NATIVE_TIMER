@@ -3,35 +3,36 @@ import {Text, View, StyleSheet} from 'react-native';
 import {colors} from '../utils/colors';
 import {fontSizes, spacing} from '../utils/sizes';
 
-export const Countdown = ({minutes = 20, isPaused}) => {
+export const Countdown = ({minutes = .1, isPaused, onProgress}) => {
   const minToMili = min => min * 1000 * 60;
 
-  const formatTime = time => time < 10 ? `0${time}` : time;
+  const formatTime = time => (time < 10 ? `0${time}` : time);
 
-  const interval = React.useRef(null)
+  const interval = React.useRef(null);
 
   const timer = () => {
-      setMillis((time) => {
-          if(time === 0){
-              return time
-          }
-          const timeLeft = time - 1000;
-          return timeLeft
-      })
-  }
+    setMillis(time => {
+      if (time === 0) {
+        return time;
+      }
+      const timeLeft = time - 1000;
+      onProgress(timeLeft / minToMili(minutes));
+      return timeLeft;
+    });
+  };
 
   const [millis, setMillis] = useState(minToMili(minutes));
 
-useEffect(() => {
-
-    if(isPaused){
-        return
+  useEffect(() => {
+    if (isPaused) { 
+      if (interval.current) clearInterval(interval.current);
+      return;
     }
 
-    interval.current = setInterval(timer,1000)
+    interval.current = setInterval(timer, 1000);
 
-    return () => clearInterval(interval.current)
-}, [isPaused])
+    return () => clearInterval(interval.current);
+  }, [isPaused]);
 
   const minute = Math.floor(millis / 1000 / 60) % 60;
   const seconds = Math.floor(millis / 1000) % 60;
