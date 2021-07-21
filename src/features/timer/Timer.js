@@ -23,7 +23,7 @@ const Timer = ({focousSubject}) => {
         <Countdown isPaused={!isStarted} onProgress = {onProgress} />
       </View>
       <View style={{paddingTop: spacing.xxl}}>
-        <Text style={styles.text}>Timer Goes Here bhadwe</Text>
+        <Text style={styles.text}>Timer</Text>
         <Text style={styles.task}>{focousSubject}</Text>
       </View>
       <View style={{paddingTop:spacing.sm}}>
@@ -32,6 +32,9 @@ const Timer = ({focousSubject}) => {
           style={{height: 10}}
           progress={progress}
         />
+      </View>
+      <View>
+
       </View>
       <View style={styles.buttonWrapper}>
         {isStarted ? (
